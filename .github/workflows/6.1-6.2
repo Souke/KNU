@@ -1,0 +1,325 @@
+# This is a basic workflow to help you get started with Actions
+
+// Твердохліб Ангеліна. ІПЗ 12 Лаб 6.1-6.2
+#include <iostream>
+#include <time.h>
+#include <conio.h>
+
+using namespace std;
+
+// Глобальні змінні
+int length = 10;
+bool isShowResult;
+bool isCreated = false;
+int* arr;
+int key;
+
+// Створення масиву
+void CreateArray() 
+{
+    int l;
+
+    while (true)
+    {
+        cout << "Input length: ";
+        if (scanf_s("%d", &l) != 1) 
+        {
+            cout << "You must input only numbers" << endl;
+            while (getchar() != '\n') {}
+        }
+        else if (l < 1 || l > 20) 
+        {
+            cout << "Length must be > 1 and < 20" << endl;
+            while (getchar() != '\n') {}
+        }
+        else {
+            break;
+        }
+    }
+
+    length = l;
+    arr = new int[l];
+    isCreated = true;
+    cout << "Array created!" << endl;
+}
+
+void minmax() //фукнція максимального та мінімального парного/непарного індекса
+{
+    int maxParneIndex = 0;
+    int maxParne = arr[0];
+
+    int minParneIndex = 0;
+    int minParne = arr[0];
+
+    int maxNeParneIndex = 1;
+    int maxNeParne = arr[1];
+
+    int minNeParneIndex = 1;
+    int minNeParne = arr[1];
+
+    for (int i = 0; i < length; i += 2) {
+        if (arr[i] > maxParne) {
+            maxParne = arr[i];
+            maxParneIndex = i;
+        }
+        if (arr[i] < minParne) {
+            minParne = arr[i];
+            minParneIndex = i;
+        }
+    }
+
+    for (int i = 1; i < length; i += 2) {
+        if (arr[i] > maxParne) {
+            maxNeParne = arr[i];
+            maxNeParneIndex = i;
+        }
+        if (arr[i] < minParne) {
+            minNeParne = arr[i];
+            minNeParneIndex = i;
+        }
+    }
+    cout << endl;
+    cout << "max neparne: " << maxNeParne << endl;
+    cout << "max index neparne: " << maxNeParneIndex << endl;
+    cout << endl;
+    cout << "max parne: " << maxParne << endl;
+    cout << "max index parne: " << maxParneIndex << endl;
+    cout << endl;
+    cout << "min neparne: " << minNeParne << endl;
+    cout << "min index neparne: " << minNeParneIndex << endl;
+    cout << endl;
+    cout << "min parne: " << minParne << endl;
+    cout << "min index parne: " << minParneIndex << endl;
+}
+
+void ShakerSort() // сортування
+{
+    
+    int n, c;
+    c = 0;
+    n = length;
+    do 
+    {
+        for (int i = 0; i < n - 1; i++) 
+        {
+            if (arr[i] > arr[i + 1]) 
+            {
+                arr[i] = arr[i] + arr[i + 1];
+                arr[i + 1] = arr[i] - arr[i + 1];
+                arr[i] = arr[i] - arr[i + 1];
+               
+            }
+            cout << arr[i] << " ";
+        }
+        cout << " " << endl;
+        
+        n = n - 1;
+        for (int i = length - 1; i >= c; i--) 
+        {
+            if (arr[i] < arr[i - 1]) 
+            {
+                arr[i] = arr[i] + arr[i - 1];
+                arr[i - 1] = arr[i] - arr[i - 1];
+                arr[i] = arr[i] - arr[i - 1];
+                
+            }
+            
+        }
+        
+        c = c + 1;
+    } 
+    while (n != 0 && c != 0);
+    for (int i = 0; i < length; i++) 
+    {
+        cout << arr[i] << "\t";
+    }
+}
+
+
+
+
+
+int RLinearSearch(int x, int arr[], int i, int length) //рекурсивний пошук
+{
+    if (i < length) 
+    {
+        if (arr[i] == x) 
+        {
+            return i;
+        }
+        else {
+            return RLinearSearch(x, arr, ++i, length);
+             }
+    }
+    else {
+        return (-1);
+         }
+}
+
+// Ініцілізація масиву ввід з клавіатури
+void  InitArrayByPrint() {
+    if (!isCreated) {
+        cout << "You must create array!" << endl;
+        return;
+    }
+    for (int i = 0; i < length; i++)
+    {
+        int num;
+        while (true)
+        {
+            cout << "Input number: ";
+            if (scanf_s("%d", &num) != 1) {
+                cout << "You must input only numbers" << endl;
+                while (getchar() != '\n') {}
+            }
+            else {
+                break;
+            }
+        }
+        arr[i] = num;
+        cout << arr[i];
+    }
+}
+
+
+
+
+// Ініцілізація масиву
+void InitArrayByRandom() {
+    
+    for (int i = 0; i < length; i++)
+    {
+        arr[i] = rand() % 100;
+    }
+}
+
+void PrintArray() { //друк массиву
+    
+    cout << "=====================================" << endl;
+    for (int i = 0; i < length; i++)
+    {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+    cout << "=====================================" << endl;
+}
+
+void PrintEnd() { // очищення
+    system("pause");
+    system("cls");
+}
+
+
+void Menu() { //меню
+    int menu;
+
+
+    while (true)
+    {
+        cout << "0 - Exit" << endl;
+
+        cout << "1 - Init array by print" << endl;
+        cout << "2 - Init array by random" << endl;
+        cout << "3 - Sort by Shaker Sort" << endl;
+        cout << "4 - Print array" << endl;
+        cout << "5 - Print min and max " << endl;
+        cout << "6 - Find by Recursive Linear Search" << endl;
+        while (true)
+        {
+            cout << "Choose -> ";
+            if (scanf_s("%d", &menu) != 1) {
+                cout << "You must input only numbers" << endl;
+                while (getchar() != '\n') {}
+            }
+            else {
+                break;
+            }
+        }
+
+        switch (menu)
+        {
+
+
+        case 1: {
+            system("cls");
+            CreateArray();
+            InitArrayByPrint();
+            PrintArray();
+            PrintEnd();
+            break;
+        }
+        case 2: {
+            system("cls");
+            CreateArray();
+            InitArrayByRandom();
+            PrintArray();
+            PrintEnd();
+            break;
+        }
+        case 0: {
+            exit(0);
+            break;
+        }
+        case 3: {
+            system("cls");
+
+            PrintArray();
+            ShakerSort();
+            PrintEnd();
+            break;
+        }
+        case 4: {
+            system("cls");
+            PrintArray();
+            PrintEnd();
+            break;
+        case 5: {
+            cout << " Print Min and Max" << endl;
+            system("cls");
+            PrintArray();
+            minmax();
+
+            PrintEnd();
+            break;
+        }
+        case 6: {
+
+            cout << " Find by Recursive Linear Search" << endl;
+            system("cls");
+            PrintArray();
+            ShakerSort();
+
+            
+            int input;
+            cout << "Input number which you wanna search: ";
+            cin >> input;
+            int result = RLinearSearch(input, arr, 0, length);
+            if (result == -1) {
+                cout << "Element is not found" << endl;
+            }
+            else {
+                cout << "Element " << input << " has index: " << result+1 << endl;
+            
+                PrintEnd();
+                break;
+            }
+
+
+       
+        
+
+
+        }
+
+        }
+        }
+    }
+}
+
+
+
+
+int main() //головна функція
+ {
+    Menu();
+ }
